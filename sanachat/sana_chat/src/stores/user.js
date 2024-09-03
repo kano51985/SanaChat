@@ -1,0 +1,39 @@
+// src/stores/user.js
+import { defineStore } from 'pinia';
+
+export const useUserStore = defineStore('user', {
+    state: () => ({
+        id: undefined,
+        isAuthenticated: false,
+        websocketConnected: false,
+    }),
+    getters: {
+        String:  (state) => state.id,
+        Boolean: (state) => state.isAuthenticated,
+        Boolean: (state) => state.websocketConnected,
+    },
+    actions: {
+        setId(id) {
+            console.log("truly setting========>",id);
+            this.id = id;
+        },
+        setUserStatus() {
+            this.isAuthenticated = true;
+        },
+        setWebSocketConnected(status) {
+            this.websocketConnected = status;
+        },
+        logout() {
+            this.userInfo = null;
+            this.isAuthenticated = false;
+            this.websocketConnected = false;
+        },
+    },
+    // 使用 pinia 持久化. path 填需要持久化的数据
+    persist: {
+        enabled: true,
+        storage: localStorage,
+        key: 'userInfo',
+        path: ['userId']
+        },
+});
