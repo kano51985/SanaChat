@@ -38,10 +38,11 @@ function handleLogin() {
     login(loginForm.value).then((res) => {
         if(res.data.code == 200) {
             console.log("res===============>",res.data);
+            userStore.setToken(res.data.data)
             // 设置用户信息
             setUserState(loginForm.value).then((res) => {
                 if(res.data.code == 200) {
-                    console.log("state=========",loginForm.value.id);
+                    console.log(res);
                     userStore.setId(loginForm.value.id)
                     console.log("设置用户状态中.....用户ID：" + loginForm.value.id);
                     router.push("/mainboard")

@@ -17,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Slf4j
 @Service
 public class SanaUserServiceImpl implements ISanaUserService {
@@ -31,12 +33,14 @@ public class SanaUserServiceImpl implements ISanaUserService {
     }
 
     @Override
-    public SanaUser auth(LoginDTO loginDTO) {
+    public String auth(LoginDTO loginDTO) {
         SanaUser user = sanaUserRepository.findSanaUserByUserIdAndAndPassword(loginDTO.getId(),loginDTO.getPassword());
         log.info("getting user from mongo =================> {}" , user);
         //TODO: 此处应返回枚举类，如果状态不正常需要给用户对应的通知
         if (user != null && AccountStateConstants.ACCOUNT_AVALIABLE.equals(user.getStatus())) {
-            return user; // 用户存在且状态可用
+            UUID uuid = UUID.randomUUID();
+            String real = uuid.toString().replaceAll("-", "");
+            return real; // 用户存在且状态可用
         }
         return null;
     }

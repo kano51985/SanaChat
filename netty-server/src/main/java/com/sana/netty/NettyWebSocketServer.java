@@ -1,12 +1,10 @@
 package com.sana.netty;
 
+import com.sana.netty.handler.HttpAuthHandler;
 import com.sana.netty.handler.HttpRequestHandler;
 import com.sana.netty.handler.WebSocketFrameHandler;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -42,6 +40,7 @@ public class NettyWebSocketServer implements Runnable{
             serverBootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
+
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             // 处理 http 跨域
@@ -58,12 +57,13 @@ public class NettyWebSocketServer implements Runnable{
                             // 跨域处理
                             pipeline.addLast(new CorsHandler(corsConfig));
 
+                            // 认证处理器与请求参数提取处理器
+//                            pipeline.addLast(new HttpAuthHandler());
+                            pipeline.addLast(new HttpRequestHandler());
+                            pipeline.addLast(new WebSocketServerProtocolHandler("/ws",null,true,65536 * 10,false,true));
 
-                            pipeline.addLast(new WebSocketServerProtocolHandler("/ws"));
                             // 自己的handler
                             pipeline.addLast(new WebSocketFrameHandler());
-                            // 处理http请求头中的数据
-                            pipeline.addLast(new HttpRequestHandler());
                         }
                     });
 
