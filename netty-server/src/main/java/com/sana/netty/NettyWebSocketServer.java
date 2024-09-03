@@ -57,12 +57,13 @@ public class NettyWebSocketServer implements Runnable{
                             pipeline.addLast(new ChunkedWriteHandler());
                             // 跨域处理
                             pipeline.addLast(new CorsHandler(corsConfig));
-                            // 处理http请求头中的数据
-                            pipeline.addLast(new HttpRequestHandler());
+
 
                             pipeline.addLast(new WebSocketServerProtocolHandler("/ws"));
                             // 自己的handler
                             pipeline.addLast(new WebSocketFrameHandler());
+                            // 处理http请求头中的数据
+                            pipeline.addLast(new HttpRequestHandler());
                         }
                     });
 

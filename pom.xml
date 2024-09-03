@@ -23,6 +23,8 @@
         <netty.version>4.2.0.Alpha2</netty.version>
         <mysqlconnector.version>8.0.33</mysqlconnector.version>
         <redis.version>3.1.5</redis.version>
+        <jjwt.version>0.12.5</jjwt.version>
+        <jxb.version>2.3.1</jxb.version>
         <mybatis-plus.version>3.5.7</mybatis-plus.version>
         <lombok.version>1.18.34</lombok.version>
         <hutool.version>5.8.29</hutool.version>
@@ -81,6 +83,17 @@
 <!--                <artifactId>spring-boot-starter-security</artifactId>-->
 <!--                <version>${spring-security.version}</version>-->
 <!--            </dependency>-->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <!-- 使用JWT的话JDK8以上需要添加此依赖 -->
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${jxb.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>

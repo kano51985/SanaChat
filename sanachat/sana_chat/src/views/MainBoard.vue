@@ -53,13 +53,14 @@ const selectedUser = ref(null);
 
 
 onMounted(() => {
-    connectWebSocket();
+    
     getUserContacts(userStore.id).then((res) => {
         if (res.data.code == 200) {
             contactList.value = res.data.data
             console.log("联系人获取成功！联系人为：" , res.data.data)
         }
     })
+    connectWebSocket();
 });
 onUnmounted(() => {
     closeWebSocket();
