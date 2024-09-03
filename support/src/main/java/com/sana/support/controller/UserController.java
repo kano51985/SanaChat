@@ -34,7 +34,6 @@ public class UserController {
 
     @GetMapping("contacts/{userId}")
     private R contacts(@PathVariable("userId") String id) {
-        System.out.println("id = " + id);
         log.info("getting user contacts..............");
         SanaContacts userContacts = sanaUserService.getUserContacts(id);
         System.out.println("userContacts = " + userContacts);

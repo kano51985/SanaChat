@@ -4,11 +4,13 @@ import { defineStore } from 'pinia';
 export const useUserStore = defineStore('user', {
     state: () => ({
         id: undefined,
+        token: undefined,
         isAuthenticated: false,
         websocketConnected: false,
     }),
     getters: {
         String:  (state) => state.id,
+        String:  (state) => state.token,
         Boolean: (state) => state.isAuthenticated,
         Boolean: (state) => state.websocketConnected,
     },
@@ -19,6 +21,9 @@ export const useUserStore = defineStore('user', {
         },
         setUserStatus() {
             this.isAuthenticated = true;
+        },
+        setToken(token) {
+            this.token = token;
         },
         setWebSocketConnected(status) {
             this.websocketConnected = status;

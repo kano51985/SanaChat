@@ -8,20 +8,22 @@ const socket = ref(null);
 export function connectWebSocket() {
     const userStore = useUserStore();
     const userId = userStore.id;
+    const token = userStore.token
     // 发送HTTP请求，包含自定义请求头
-    axios.get('http://localhost:8081/check', {
-        headers: {
-            'Authorization': `${userId}`
-        }
-    }).then(response => {
-        console.log('HTTP request sent successfully.' , response);
+    // axios.get(`http://localhost:8081/userId=${userId}`, {
+    //     headers: {
+    //         'Authorization': `${userId}`
+    //     }
+    // }).then(response => {
+    //     console.log('HTTP request sent successfully.' , response);
         // WebSocket连接代码
         if (!socket.value || socket.value.readyState !== WebSocket.OPEN) {
-            socket.value = new WebSocket('ws://localhost:8081/ws');
+            socket.value = new WebSocket(`ws://localhost:8081/ws?userId=${userId}`);
 
             socket.value.onopen = () => {
                 console.log("WebSocket connection established.");
                 userStore.setWebSocketConnected(true);
+                // sendMessage(`token=${token}`)
             };
 
             socket.value.onmessage = (event) => {
@@ -38,9 +40,9 @@ export function connectWebSocket() {
                 console.error("WebSocket error: ", error);
             };
         }
-    }).catch(error => {
-        console.warn('HTTP request encountered an error, but it is being ignored:', error);
-    });
+    // }).catch(error => {
+    //     console.warn('HTTP request encountered an error, but it is being ignored:', error);
+    // });
 }
 
 export function sendMessage(message) {
