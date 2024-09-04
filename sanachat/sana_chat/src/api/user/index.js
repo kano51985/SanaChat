@@ -19,3 +19,4 @@ export function getUserContacts(userId) {
         method: 'GET'
     })
 }
+

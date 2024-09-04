@@ -26,22 +26,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Slf4j
 public class MsgUtils {
 
-    private static final Map<String, ChannelHandlerContext> channels = new ConcurrentHashMap<>();
+    private static final Map<Channel, String> userIdMap = new ConcurrentHashMap<>();
 
-    public static void addChannel(String userId, ChannelHandlerContext channel) {
-        if (userId != null && channel != null) {
-            channels.put(userId, channel);
-        }
+    public static void setUserId(Channel channel, String userId) {
+        userIdMap.put(channel, userId);
     }
 
-    public static void removeChannel(String userId) {
-        if (userId != null) {
-            channels.remove(userId);
-        }
+    public static String getUserId(Channel channel) {
+        return userIdMap.get(channel);
     }
 
-    public static ChannelHandlerContext getChannel(String userId) {
-        return channels.get(userId);
+    public static void removeUserId(Channel channel) {
+        userIdMap.remove(channel);
     }
 }
 

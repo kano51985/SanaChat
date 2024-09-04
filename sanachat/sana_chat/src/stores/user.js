@@ -7,12 +7,14 @@ export const useUserStore = defineStore('user', {
         token: undefined,
         isAuthenticated: false,
         websocketConnected: false,
+        currentChatUser: undefined,
     }),
     getters: {
         String:  (state) => state.id,
         String:  (state) => state.token,
         Boolean: (state) => state.isAuthenticated,
         Boolean: (state) => state.websocketConnected,
+        String: (state) => state.currentChatUser,
     },
     actions: {
         setId(id) {
@@ -27,6 +29,9 @@ export const useUserStore = defineStore('user', {
         },
         setWebSocketConnected(status) {
             this.websocketConnected = status;
+        },
+        setCurrentChatUser(uid) {
+            this.currentChatUser = uid;
         },
         logout() {
             this.userInfo = null;

@@ -30,13 +30,29 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { getUserMessagesDetail } from '@/api/message/index'
+import { useUserStore } from '@/stores/user';
+const userStore = useUserStore();
+
 const msgList = ref([
     {
         avatar: "https://lovesana.oss-cn-beijing.aliyuncs.com/sana.jpg",
         msgContent: "测试数据11111",
     },
 ])
+const msgListDto = ref([
+    {
+        belongToContact: undefined,
+        receiverId: undefined
+    }
+])
+onMounted(()=>{
+    console.log("currentChatUser=======================>",userStore.currentChatUser);
+    msgListDto.value.receiverId = userStore.currentChatUser
+    msgListDto.value.belongToContact = userStore.id
+    getUserMessagesDetail(userStore.currentChatUser)
+})
 const msgEditContent = ref("111")
 </script>
 

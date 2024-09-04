@@ -14,6 +14,11 @@ import java.util.List;
 public class SanaPrivateMsg {
     @Id
     private ObjectId id;
+    /**
+     * 属于哪个对话
+     */
+    @Field("belong_to_contact")
+    private String belongToContact;
     @Field("sender_id")
     private String senderId;
     @Field("receiver_id")
@@ -21,7 +26,7 @@ public class SanaPrivateMsg {
     @Field("message")
     private String message;
     @Field("timestamp")
-    private Date timestamp;
+    private String timestamp;
     @Field("status")
     private Integer status;
 

@@ -23,7 +23,6 @@ export function connectWebSocket() {
             socket.value.onopen = () => {
                 console.log("WebSocket connection established.");
                 userStore.setWebSocketConnected(true);
-                // sendMessage(`token=${token}`)
             };
 
             socket.value.onmessage = (event) => {

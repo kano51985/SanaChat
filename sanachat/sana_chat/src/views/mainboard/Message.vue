@@ -1,14 +1,14 @@
 <template>
     <div class="mid">
-        <div class="contact" v-for="item in testData">
+        <div class="contact" v-for="item in msgList" :key="item.receiverId" @click="handleClick(item.receiverId)">
             <div class="left_info">
                 <!-- 头像链接 -->
                 <div>
-                    <img :src="item.avatar" class="left_avatar">
+                    <img :src="item.receiverAvatar" class="left_avatar">
                 </div>
                 <div class="left_info">
                     <div class="info_nickname">
-                        <div class="nickname"><h3>{{ item.nickname }}</h3></div>
+                        <div class="nickname"><h3>{{ item.receiverNickname }}</h3></div>
                     </div>
                     <div class="info_recentMsg">
                         <div class="recentMsg"><h4>{{ item.recentMsg }}</h4></div>                       
@@ -23,22 +23,25 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, defineProps } from 'vue';
+import { useUserStore } from '@/stores/user';
+const userStore = useUserStore()
+const props = defineProps({
+    msgList: {
+    type: Array,
+    default: () => []
+  },
+});
 
-const testData = ref([
-    {
-        nickname : "白日",
-        avatar : "https://lovesana.oss-cn-beijing.aliyuncs.com/sana.jpg",
-        recentMsg : "this is my msg",
-        sendTime : "12:46",
-    },
-    {
-        nickname : "sana",
-        avatar : "https://lovesana.oss-cn-beijing.aliyuncs.com/sana.jpg",
-        recentMsg : "this is your msg",
-        sendTime : "12:47",
-    },
-])
+onMounted(()=> {
+    console.log("received msgList =>",props);
+    
+})
+const emit = defineEmits(['current-chat'])
+function handleClick(receiverId) {
+    emit('current-chat',receiverId)
+    userStore.currentChatUser = receiverId;
+}
 </script>
 
 <style lang="scss" scoped>
@@ -90,6 +93,9 @@ const testData = ref([
                     width: 100%;
                     h4 {
                         color: #e8f2f9;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
                     }
                 }
             }

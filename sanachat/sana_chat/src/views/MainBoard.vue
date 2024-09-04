@@ -10,7 +10,7 @@
       <!-- 中间部分的 RouterView -->
       <div>
         <!-- ！！！！！使用子传父 Emit 来传递信息！！！！！-->
-        <RouterView :contactList="contactList" @select-user="selectUser" />
+        <RouterView :contactList="contactList" :msgList="msgList" @select-user="selectUser" @current-chat="currentchat"/>
       </div>
   
       <!-- 右侧部分，根据条件渲染 -->
@@ -37,6 +37,7 @@ import MessageDetails from './tabs/MessageDetails.vue';
 import { onMounted } from 'vue';
 import { closeWebSocket } from '@/services/websocket';
 import { getUserContacts } from '../api/user/index'
+import { getUserMessages } from '../api/message/index'
 import { useUserStore } from '@/stores/user';
 import { connectWebSocket } from '@/services/websocket';
 import { onUnmounted } from 'vue';
@@ -45,10 +46,12 @@ import { ref } from 'vue';
 
 const userStore = useUserStore();
 const contactList = ref();
+const msgList = ref([]);
 const showDefault = ref(true);
 const showUserInfoDetail = ref(false);
 const showMsgDetails = ref(false)
 const selectedUser = ref(null);
+const currentChatUser = ref(null)
 
 
 
@@ -61,6 +64,10 @@ onMounted(() => {
         }
     })
     connectWebSocket();
+    getUserMessages(userStore.id).then((res) => {
+        msgList.value = res.data.data
+        console.log("msgList.value :" , msgList.value);
+    });
 });
 onUnmounted(() => {
     closeWebSocket();
@@ -80,11 +87,18 @@ function handleMessage() {
 function selectUser(user) {
   selectedUser.value = user;
   showDefault.value = false;
+  showMsgDetails.value = false;
   showUserInfoDetail.value = true;
+}
+function currentchat(receiverId) {
+    currentChatUser.value = receiverId;
+    showDefault.value = false;
+    showMsgDetails.value = true;
 }
 function handlePM() {
   showUserInfoDetail.value = false;
-  showMsgDetails.value = true;
+  showMsgDetails.value = false;
+    showDefault.value = true;
   router.push("/mainboard/message");
 }
 </script>
