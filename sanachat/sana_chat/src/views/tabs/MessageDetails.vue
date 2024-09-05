@@ -10,50 +10,53 @@
         </div>
         <div class="msgDetailsBoxMain">
             <div class="msgInfo">
-                <div class="msg" v-for="item in msgList">
+                <div class="msg" v-for="item in msgList" :key="item.id.timestamp" :style="{flexDirection: item.operation === 1 ? 'row' : 'row-reverse',justifyContent: item.operation === 1 ? 'start' : 'end'}">
                     <div>
-                        <img :src="item.avatar"  class="msg_avatar"/>
+                        <img :src="item.operation === 1 ? item.receiverAvatar : userStore.avatar"  class="msg_avatar"/>
                     </div>
                     <div class="msg_detail">
-                        <h5>{{ item.msgContent }}</h5>
+                        <h5>{{ item.message }}</h5>
                     </div>
                 </div>
             </div>
             <div class="msgEditArea">
-                <textarea :model="msgEditContent" :value="msgEditContent"></textarea>
+                <textarea v-model="msgEditContent"></textarea>
             </div>
             <div class="submitButton">
-                <span class="button">发送</span>
+                <span class="button" @click="handleSend()">发送</span>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { getUserMessagesDetail } from '@/api/message/index'
+import { ref, watch } from 'vue';
 import { useUserStore } from '@/stores/user';
+import { useMessageStore } from '@/stores/message';
+import { sendMessage } from '@/services/websocket';
 const userStore = useUserStore();
+const messageStore = useMessageStore();
+const msgList = ref()
+const fetchMessages = () => {
+    msgList.value = messageStore.getMessagesByReceiverId(userStore.currentChatUser).flat();
+    
+}
 
-const msgList = ref([
-    {
-        avatar: "https://lovesana.oss-cn-beijing.aliyuncs.com/sana.jpg",
-        msgContent: "测试数据11111",
-    },
-])
-const msgListDto = ref([
-    {
-        belongToContact: undefined,
-        receiverId: undefined
-    }
-])
-onMounted(()=>{
-    console.log("currentChatUser=======================>",userStore.currentChatUser);
-    msgListDto.value.receiverId = userStore.currentChatUser
-    msgListDto.value.belongToContact = userStore.id
-    getUserMessagesDetail(userStore.currentChatUser)
-})
-const msgEditContent = ref("111")
+watch(() => userStore.currentChatUser, () => {
+    msgList.value = []; // 先清空消息列表
+    // TODO:因为时侦听值变动，所以首次进入时并不会触发
+    fetchMessages();
+}, { immediate: true });
+
+const msgEditContent = ref()
+
+function handleSend() {
+    sendMessage(msgEditContent.value)
+    console.log(msgEditContent.value);
+    
+}
+
+
 </script>
 
 <style lang="scss" scoped>

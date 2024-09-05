@@ -4,6 +4,7 @@ import { defineStore } from 'pinia';
 export const useUserStore = defineStore('user', {
     state: () => ({
         id: undefined,
+        avatar: undefined,
         token: undefined,
         isAuthenticated: false,
         websocketConnected: false,
@@ -11,6 +12,7 @@ export const useUserStore = defineStore('user', {
     }),
     getters: {
         String:  (state) => state.id,
+        String: (state) => state.avatar,
         String:  (state) => state.token,
         Boolean: (state) => state.isAuthenticated,
         Boolean: (state) => state.websocketConnected,
@@ -18,8 +20,10 @@ export const useUserStore = defineStore('user', {
     },
     actions: {
         setId(id) {
-            console.log("truly setting========>",id);
             this.id = id;
+        },
+        setAvatar(avatar) {
+            this.avatar = avatar;
         },
         setUserStatus() {
             this.isAuthenticated = true;

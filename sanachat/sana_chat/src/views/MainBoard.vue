@@ -55,6 +55,8 @@ const currentChatUser = ref(null)
 
 
 
+
+
 onMounted(() => {
     
     getUserContacts(userStore.id).then((res) => {
@@ -93,7 +95,10 @@ function selectUser(user) {
 function currentchat(receiverId) {
     currentChatUser.value = receiverId;
     showDefault.value = false;
+    showUserInfoDetail.value = false;
     showMsgDetails.value = true;
+    router.push("/mainboard/message/messageDetails");
+    userStore.currentChatUser = currentChatUser.value
 }
 function handlePM() {
   showUserInfoDetail.value = false;

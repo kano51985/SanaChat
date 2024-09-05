@@ -3,6 +3,7 @@ package com.sana.support.controller;
 import cn.hutool.core.util.ObjUtil;
 import com.sana.common.domain.dto.UserStateDTO;
 import com.sana.common.domain.entity.SanaContacts;
+import com.sana.common.domain.vo.BasicUserInfoVO;
 import com.sana.common.response.R;
 import com.sana.support.service.ISanaUserService;
 import jakarta.websocket.server.PathParam;
@@ -26,7 +27,8 @@ public class UserController {
             // 保存用户状态
             boolean flag = sanaUserService.setUserState(userStateDTO);
             if (flag) {
-                return R.success("设置状态成功！",userStateDTO.getId());
+                BasicUserInfoVO userInfoVO = sanaUserService.getUserBasicInfo(userStateDTO.getId());
+                return R.success("设置状态成功！",userInfoVO);
             }
         }
         return R.error();

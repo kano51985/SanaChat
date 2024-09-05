@@ -28,7 +28,7 @@ import { setUserState } from '../api/user/index'
 import router from '@/router';
 import { useUserStore } from '@/stores/user';
 const userStore = useUserStore();
-
+const avatar = ref();
 const loginForm = ref({
     id: undefined,
     password: undefined,
@@ -37,14 +37,13 @@ const loginForm = ref({
 function handleLogin() {
     login(loginForm.value).then((res) => {
         if(res.data.code == 200) {
-            console.log("res===============>",res.data);
             userStore.setToken(res.data.data)
             // 设置用户信息
             setUserState(loginForm.value).then((res) => {
                 if(res.data.code == 200) {
-                    console.log(res);
                     userStore.setId(loginForm.value.id)
-                    console.log("设置用户状态中.....用户ID：" + loginForm.value.id);
+                    avatar.value = res.data.data.avatar
+                    userStore.setAvatar(avatar.value)
                     router.push("/mainboard")
                 }else {
                     console.log("设置用户状态失败！请检查服务端！");

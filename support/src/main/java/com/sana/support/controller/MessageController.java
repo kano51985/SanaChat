@@ -6,7 +6,6 @@ import com.sana.common.domain.entity.SanaPrivateMsg;
 import com.sana.common.response.R;
 import com.sana.support.service.IPrivateMessagesService;
 import com.sana.support.service.ISanaPersonalContacts;
-import com.sana.support.service.ISanaUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +37,7 @@ public class MessageController {
      */
     @PostMapping("list/detail")
     private R detail(@RequestBody MsgListDto msgListDto) {
+        System.out.println("msgListDto = " + msgListDto);
         List<SanaPrivateMsg> list = privateMessagesService.getChatDetails(msgListDto.getBelongToContact(),msgListDto.getReceiverId());
         System.out.println("list = " + list);
         return R.success(list);

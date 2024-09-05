@@ -23,12 +23,16 @@ public class SanaPrivateMsg {
     private String senderId;
     @Field("receiver_id")
     private String receiverId;
+    @Field("receiver_avatar")
+    private String receiverAvatar;
     @Field("message")
     private String message;
     @Field("timestamp")
     private String timestamp;
     @Field("status")
     private Integer status;
+    @Field("operation")
+    private Integer operation;
 
     @Data
     public static class attachments {

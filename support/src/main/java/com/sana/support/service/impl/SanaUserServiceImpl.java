@@ -8,6 +8,7 @@ import com.sana.common.domain.dto.LoginDTO;
 import com.sana.common.domain.dto.UserStateDTO;
 import com.sana.common.domain.entity.SanaContacts;
 import com.sana.common.domain.entity.SanaUser;
+import com.sana.common.domain.vo.BasicUserInfoVO;
 import com.sana.support.repository.ContactsRepository;
 import com.sana.support.repository.SanaUserRepository;
 import com.sana.support.service.ISanaUserService;
@@ -68,5 +69,16 @@ public class SanaUserServiceImpl implements ISanaUserService {
         log.info("getting user contacts from mongodb......................");
         SanaContacts contacts = contactsRepository.findByUserId(id);
         return contacts;
+    }
+
+    @Override
+    public BasicUserInfoVO getUserBasicInfo(String id) {
+        SanaUser user = sanaUserRepository.findByUserId(id);
+        BasicUserInfoVO userInfoVO = new BasicUserInfoVO();
+        userInfoVO.setId(user.getUserId());
+        userInfoVO.setNickname(user.getNickname());
+        userInfoVO.setAvatar(user.getAvatar());
+
+        return userInfoVO;
     }
 }

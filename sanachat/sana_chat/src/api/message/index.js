@@ -11,10 +11,11 @@ export function getUserMessages(userId) {
 }
 
 // 获取对话列表详细
-export function getUserMessagesDetail(userId) {
+export function getUserMessagesDetail(data) {
 
     return request({
-        url: `/message/list/detail/${userId}`,
-        method: 'GET'
+        url: `/message/list/detail`,
+        method: 'POST',
+        data: data
     })
 }

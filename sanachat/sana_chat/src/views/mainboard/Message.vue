@@ -23,25 +23,45 @@
 </template>
 
 <script setup>
-import { onMounted, defineProps } from 'vue';
+import { defineProps,ref } from 'vue';
 import { useUserStore } from '@/stores/user';
+import { useMessageStore } from '@/stores/message'
+import { getUserMessagesDetail } from '@/api/message/index'
+
 const userStore = useUserStore()
+const messageStore = useMessageStore()
 const props = defineProps({
     msgList: {
     type: Array,
     default: () => []
   },
 });
+const msgListDto = ref([
+    {
+        belongToContact: undefined,
+        receiverId: undefined
+    }
+])
 
-onMounted(()=> {
-    console.log("received msgList =>",props);
-    
-})
 const emit = defineEmits(['current-chat'])
 function handleClick(receiverId) {
-    emit('current-chat',receiverId)
-    userStore.currentChatUser = receiverId;
+    emit('current-chat', receiverId)
+    console.log(receiverId)
+    
+    userStore.currentChatUser = receiverId
+    if (!messageStore.hasFetched(receiverId)) {
+        msgListDto.receiverId = userStore.currentChatUser
+        msgListDto.belongToContact = userStore.id
+        getUserMessagesDetail(msgListDto).then((res) => {
+            if (res.data.code == 200) {
+                messageStore.replaceMessage(receiverId, res.data.data)
+                messageStore.setFetch(receiverId) // 成功获取后标记用户
+            }
+        })
+    }
 }
+
+
 </script>
 
 <style lang="scss" scoped>
