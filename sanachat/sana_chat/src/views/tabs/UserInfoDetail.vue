@@ -28,7 +28,7 @@
         </div>
         <hr/>
         <div class="footer">
-            <div class="button" @click="handlePM(user)">
+            <div class="button" @click="handlePM(user.userId)">
                 <span>发消息</span>
             </div>
         </div>
@@ -37,8 +37,9 @@
 
 <script setup>
 import router from '@/router';
-import { sendMessage } from '@/services/websocket';
+import { useUserStore } from '@/stores/user';
 import { onMounted, defineProps } from 'vue';
+const userStore = useUserStore()
 const emit = defineEmits(['send-message']);
 // 接收父组件传递的用户数据
 const props = defineProps({
@@ -50,13 +51,13 @@ const props = defineProps({
 onMounted(() => {
   console.log('UserInfoDetail.vue 加载成功');
 });
-function handlePM(user) {
-    sendMessage("im alive!")
-    emit('send-message');
+function handlePM(uid) {
+    emit('send-message',uid);
+    userStore.setCurrentChatUser(uid)
     // 首先跳转到中间的 message 组件
     router.push({
         path: '/mainboard/message',
-        // query: { userId: user.userId }  // 如果需要传递用户信息
+        //query: { userId: user.userId }  // 如果需要传递用户信息
     }).then(() => {
         // 在中间组件加载完后，再切换右侧的 messageDetails 组件
         router.push('/mainboard/message/messageDetails');

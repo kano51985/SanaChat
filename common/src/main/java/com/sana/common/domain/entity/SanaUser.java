@@ -23,4 +23,6 @@ public class SanaUser {
     private Integer deleted;
     @Field("avatar")
     private String avatar;
+    @Field("contactlist_id")
+    private String contactListId;
 }
