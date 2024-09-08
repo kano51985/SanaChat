@@ -26,6 +26,11 @@ spring:
           max-wait: -1ms
     mongodb:
       uri: mongodb://localhost:27017/SanaChat
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

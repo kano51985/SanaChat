@@ -2,7 +2,9 @@
     <div class="main">
       <!-- 最左侧头像，消息以及联系人按钮 -->
       <div class="left_function">
-        <div class="avatar"></div>
+        <div>
+            <img :src="userStore.avatar" class="avatar"/>
+        </div>
         <div class="message_area" @click="handleMessage"><h1>message</h1></div>
         <div class="messager_area" @click="handleMessager"><h1>messager</h1></div>
       </div>
@@ -129,7 +131,6 @@ function handlePM(uid) {
     justify-content: start;
     align-items: center;
     .avatar {
-        background-color: aqua;
         margin-top: 5vh;
         width: 10vh;
         height: 10vh;

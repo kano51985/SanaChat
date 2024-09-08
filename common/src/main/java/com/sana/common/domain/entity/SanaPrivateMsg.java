@@ -23,6 +23,7 @@ public class SanaPrivateMsg {
     private String chatter;
     @Field("sender_id")
     private String senderId;
+    private String senderAvatar;
     @Field("receiver_id")
     private String receiverId;
     @Field("receiver_avatar")

@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface PrivateMessagesRepository extends MongoRepository<SanaPrivateMsg,String> {
-    List<SanaPrivateMsg> findByBelongToContactAndChatter(String userId,String chatter);
+    List<SanaPrivateMsg> findByBelongToContactAndReceiverId(String userId,String receiverId);
 }

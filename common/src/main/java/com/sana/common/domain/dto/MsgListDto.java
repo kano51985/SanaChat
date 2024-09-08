@@ -7,5 +7,5 @@ import java.io.Serializable;
 @Data
 public class MsgListDto implements Serializable {
     private String belongToContact;
-    private String chatter;
+    private String receiverId;
 }

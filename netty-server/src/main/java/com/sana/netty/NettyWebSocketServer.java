@@ -3,6 +3,7 @@ package com.sana.netty;
 import com.sana.netty.handler.HttpAuthHandler;
 import com.sana.netty.handler.HttpRequestHandler;
 import com.sana.netty.handler.WebSocketFrameHandler;
+import com.sana.netty.rabbitmq.producer.ChatMessagePersistenter;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -17,15 +18,20 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import jakarta.annotation.PreDestroy;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
 @Component
-
 public class NettyWebSocketServer implements Runnable{
 
     private EventLoopGroup bossGroup = new NioEventLoopGroup();
     private EventLoopGroup workerGroup = new NioEventLoopGroup();
+    private final ChatMessagePersistenter chatMessagePersistenter;
+    @Autowired
+    public NettyWebSocketServer(ChatMessagePersistenter chatMessagePersistenter) {
+        this.chatMessagePersistenter = chatMessagePersistenter;
+    }
 
     @PreDestroy
     public void stop() {
@@ -61,7 +67,7 @@ public class NettyWebSocketServer implements Runnable{
                             pipeline.addLast(new WebSocketServerProtocolHandler("/ws",null,true,65536 * 10,false,true));
 //                            pipeline.addLast(new HttpRequestHandler());
                             // 自己的handler
-                            pipeline.addLast(new WebSocketFrameHandler());
+                            pipeline.addLast(new WebSocketFrameHandler(chatMessagePersistenter));
                         }
                     });
 

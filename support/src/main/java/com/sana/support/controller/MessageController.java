@@ -38,7 +38,7 @@ public class MessageController {
     @PostMapping("list/detail")
     private R detail(@RequestBody MsgListDto msgListDto) {
         System.out.println("msgListDto = " + msgListDto);
-        List<SanaPrivateMsg> list = privateMessagesService.getChatDetails(msgListDto.getBelongToContact(), msgListDto.getChatter());
+        List<SanaPrivateMsg> list = privateMessagesService.getChatDetails(msgListDto.getBelongToContact(), msgListDto.getReceiverId());
         System.out.println("list = " + list);
         return R.success(list);
     }

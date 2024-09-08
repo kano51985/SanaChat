@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { defineProps, onBeforeMount, ref } from 'vue';
+import { defineProps, ref } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useMessageStore } from '@/stores/message'
 import { getUserMessagesDetail } from '@/api/message/index'
@@ -43,7 +43,7 @@ const props = defineProps({
 
 const msgListDto = ref({
     belongToContact: undefined,
-    chatter: undefined
+    receiverId: undefined
 })
 
 const emit = defineEmits(['current-chat'])
@@ -52,7 +52,7 @@ function handleClick(receiverId) {
     
     userStore.currentChatUser = receiverId
     if (!messageStore.hasFetched(receiverId)) {
-        msgListDto.value.chatter = userStore.currentChatUser
+        msgListDto.value.receiverId = userStore.currentChatUser
         msgListDto.value.belongToContact = userStore.id
         getUserMessagesDetail(msgListDto.value).then((res) => {
             if (res.data.code == 200) {
