@@ -63,12 +63,16 @@ onMounted(() => {
         if (res.data.code == 200) {
             contactList.value = res.data.data
             console.log("联系人获取成功！联系人为：" , res.data.data)
+            contactList.value.contacts.forEach(group => {
+                group.groupMembers.forEach(member => {
+                    userStore.setUserAvatars(member.userId, member.avatar);
+                });
+            });
         }
     })
     connectWebSocket();
     getUserMessages(userStore.id).then((res) => {
         msgList.value = res.data.data
-        console.log("msgList.value :" , msgList.value);
     });
 });
 onUnmounted(() => {
@@ -100,10 +104,13 @@ function currentchat(receiverId) {
     router.push("/mainboard/message/messageDetails");
     userStore.currentChatUser = currentChatUser.value
 }
-function handlePM() {
+function handlePM(uid) {
   showUserInfoDetail.value = false;
-  showMsgDetails.value = false;
-    showDefault.value = true;
+  showDefault.value = false;
+  userStore.currentChatUser = null;
+  userStore.setCurrentChatUser(uid)
+  showMsgDetails.value = true;
+
   router.push("/mainboard/message");
 }
 </script>

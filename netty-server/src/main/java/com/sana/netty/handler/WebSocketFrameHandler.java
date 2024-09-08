@@ -1,5 +1,8 @@
 package com.sana.netty.handler;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.json.JSONUtil;
+import com.sana.common.domain.entity.SanaPrivateMsg;
 import com.sana.netty.utils.MsgUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -14,7 +17,8 @@ public class WebSocketFrameHandler extends SimpleChannelInboundHandler<TextWebSo
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
         // 收到消息后进行处理
         String received = msg.text();
-        System.out.println("ReceivedMsg: " + received);
+        SanaPrivateMsg privateMsg = JSONUtil.toBean(received, SanaPrivateMsg.class);
+        System.out.println("ReceivedMsg: " + privateMsg);
         // 响应客户端
         ctx.channel().writeAndFlush(new TextWebSocketFrame("Message received: " + received));
     }

@@ -1,15 +1,14 @@
 package com.sana.support.service.impl;
 
-import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.sana.common.constants.AccountStateConstants;
 import com.sana.common.constants.CacheConstants;
 import com.sana.common.domain.dto.LoginDTO;
 import com.sana.common.domain.dto.UserStateDTO;
-import com.sana.common.domain.entity.SanaContacts;
+import com.sana.common.domain.entity.SanaContactors;
 import com.sana.common.domain.entity.SanaUser;
 import com.sana.common.domain.vo.BasicUserInfoVO;
-import com.sana.support.repository.ContactsRepository;
+import com.sana.support.repository.ContactorsRepository;
 import com.sana.support.repository.SanaUserRepository;
 import com.sana.support.service.ISanaUserService;
 import com.sana.support.utils.RedisCacheUtil;
@@ -26,7 +25,7 @@ public class SanaUserServiceImpl implements ISanaUserService {
     @Resource
     private SanaUserRepository sanaUserRepository;
     @Resource
-    private ContactsRepository contactsRepository;
+    private ContactorsRepository contactsRepository;
     private final RedisCacheUtil redisCacheUtil;
 
     public SanaUserServiceImpl(RedisCacheUtil redisCacheUtil) {
@@ -65,9 +64,9 @@ public class SanaUserServiceImpl implements ISanaUserService {
     }
 
     @Override
-    public SanaContacts getUserContacts(String id) {
+    public SanaContactors getUserContacts(String id) {
         log.info("getting user contacts from mongodb......................");
-        SanaContacts contacts = contactsRepository.findByUserId(id);
+        SanaContactors contacts = contactsRepository.findByUserId(id);
         return contacts;
     }
 

@@ -2,11 +2,10 @@ package com.sana.support.controller;
 
 import cn.hutool.core.util.ObjUtil;
 import com.sana.common.domain.dto.UserStateDTO;
-import com.sana.common.domain.entity.SanaContacts;
+import com.sana.common.domain.entity.SanaContactors;
 import com.sana.common.domain.vo.BasicUserInfoVO;
 import com.sana.common.response.R;
 import com.sana.support.service.ISanaUserService;
-import jakarta.websocket.server.PathParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +36,7 @@ public class UserController {
     @GetMapping("contacts/{userId}")
     private R contacts(@PathVariable("userId") String id) {
         log.info("getting user contacts..............");
-        SanaContacts userContacts = sanaUserService.getUserContacts(id);
+        SanaContactors userContacts = sanaUserService.getUserContacts(id);
         System.out.println("userContacts = " + userContacts);
         if (ObjUtil.isNotNull(userContacts)) {
             return R.success("获取成功！" , userContacts);

@@ -1,29 +1,33 @@
 <template>
     <div class="mid">
-        <div class="contact" v-for="item in msgList" :key="item.receiverId" @click="handleClick(item.receiverId)">
-            <div class="left_info">
-                <!-- 头像链接 -->
-                <div>
-                    <img :src="item.receiverAvatar" class="left_avatar">
-                </div>
+        <!-- 第一层循环遍历 msgList -->
+        <div v-for="msgGroup in msgList" :key="msgGroup.id.timestamp">
+            <!-- 第二层循环遍历每个 msgGroup 下的 list -->
+            <div class="contact" v-for="item in msgGroup.list" :key="item.receiverId" @click="handleClick(item.receiverId)">
                 <div class="left_info">
-                    <div class="info_nickname">
-                        <div class="nickname"><h3>{{ item.receiverNickname }}</h3></div>
+                    <!-- 头像链接 -->
+                    <div>
+                        <img :src="item.receiverAvatar" class="left_avatar">
                     </div>
-                    <div class="info_recentMsg">
-                        <div class="recentMsg"><h4>{{ item.recentMsg }}</h4></div>                       
+                    <div class="left_info">
+                        <div class="info_nickname">
+                            <div class="nickname"><h3>{{ item.receiverNickname }}</h3></div>
+                        </div>
+                        <div class="info_recentMsg">
+                            <div class="recentMsg"><h4>{{ item.recentMsg }}</h4></div>                       
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="right_info">
-                <span style="color: #e8f2f9;">{{ item.sendTime }}</span>
+                <div class="right_info">
+                    <span style="color: #e8f2f9;">{{ item.sendTime }}</span>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { defineProps,ref } from 'vue';
+import { defineProps, onBeforeMount, ref } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useMessageStore } from '@/stores/message'
 import { getUserMessagesDetail } from '@/api/message/index'
@@ -36,23 +40,21 @@ const props = defineProps({
     default: () => []
   },
 });
-const msgListDto = ref([
-    {
-        belongToContact: undefined,
-        receiverId: undefined
-    }
-])
+
+const msgListDto = ref({
+    belongToContact: undefined,
+    chatter: undefined
+})
 
 const emit = defineEmits(['current-chat'])
 function handleClick(receiverId) {
     emit('current-chat', receiverId)
-    console.log(receiverId)
     
     userStore.currentChatUser = receiverId
     if (!messageStore.hasFetched(receiverId)) {
-        msgListDto.receiverId = userStore.currentChatUser
-        msgListDto.belongToContact = userStore.id
-        getUserMessagesDetail(msgListDto).then((res) => {
+        msgListDto.value.chatter = userStore.currentChatUser
+        msgListDto.value.belongToContact = userStore.id
+        getUserMessagesDetail(msgListDto.value).then((res) => {
             if (res.data.code == 200) {
                 messageStore.replaceMessage(receiverId, res.data.data)
                 messageStore.setFetch(receiverId) // 成功获取后标记用户
@@ -60,8 +62,6 @@ function handleClick(receiverId) {
         })
     }
 }
-
-
 </script>
 
 <style lang="scss" scoped>

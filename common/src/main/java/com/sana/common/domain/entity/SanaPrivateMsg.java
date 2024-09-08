@@ -19,6 +19,8 @@ public class SanaPrivateMsg {
      */
     @Field("belong_to_contact")
     private String belongToContact;
+    @Field("chatter")
+    private String chatter;
     @Field("sender_id")
     private String senderId;
     @Field("receiver_id")
@@ -31,8 +33,7 @@ public class SanaPrivateMsg {
     private String timestamp;
     @Field("status")
     private Integer status;
-    @Field("operation")
-    private Integer operation;
+
 
     @Data
     public static class attachments {

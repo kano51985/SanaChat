@@ -10,8 +10,8 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@Document("contacts")
-public class SanaContacts {
+@Document("contactors")
+public class SanaContactors {
     @Id
     private ObjectId id;
 

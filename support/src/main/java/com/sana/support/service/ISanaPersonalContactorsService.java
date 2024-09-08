@@ -4,6 +4,6 @@ import com.sana.common.domain.entity.SanaPersonalContacts;
 
 import java.util.List;
 
-public interface ISanaPersonalContacts {
+public interface ISanaPersonalContactorsService {
     List<SanaPersonalContacts> getTempContactByUserId(String userId);
 }

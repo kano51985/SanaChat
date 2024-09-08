@@ -19,8 +19,8 @@ public class PrivateMessagesServiceImpl implements IPrivateMessagesService {
     }
 
     @Override
-    public List<SanaPrivateMsg> getChatDetails(String belongToContact,String receiverId) {
-        return privateMessagesRepository.findByBelongToContactAndReceiverId(belongToContact,receiverId);
+    public List<SanaPrivateMsg> getChatDetails(String belongToContact,String chatter) {
+        return privateMessagesRepository.findByBelongToContactAndChatter(belongToContact,chatter);
     }
 
 
